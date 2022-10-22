@@ -84,7 +84,7 @@ contract Rafflebot {
         return endTime;
     }
 
-    function getEntrants() public view returns (address[]) {
+    function getEntrants() public view returns (address[] memory) {
         return entrants;
     }
 

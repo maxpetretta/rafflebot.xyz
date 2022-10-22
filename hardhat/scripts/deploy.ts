@@ -1,23 +1,44 @@
-import { ethers } from "hardhat";
+/**
+ * Deploy the smart contract to the specified network
+ */
+const hre = require("hardhat")
 
-async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+const main = async () => {
+  const [owner] = await hre.ethers.getSigners()
+  const balance = await owner.getBalance()
+  const network = hre.network.name
 
-  const lockedAmount = ethers.utils.parseEther("1");
+  console.log("Selected network:", network)
+  console.log("Deploying contract with account:", owner.address)
+  console.log("Account balance:", hre.ethers.utils.formatEther(balance))
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log("\nDeploying in 10 seconds...")
+  await sleep(10000)
 
-  await lock.deployed();
+  const contract = await hre.ethers.getContractFactory("Rafflebot")
+  const txn = await contract.deploy()
 
-  console.log(`Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`);
+  await txn.deployed()
+  console.log("\nContract address:", txn.address)
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+/**
+* Sleep the main thread for the specified number of milliseconds
+* @param {number} ms
+*/
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+/**
+* Execute the main script
+*/
+const runMain = async () => {
+  try {
+    await main()
+    process.exit(0)
+  } catch (error) {
+    console.error(error)
+    process.exit(1)
+  }
+}
+
+runMain()
