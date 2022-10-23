@@ -33,7 +33,7 @@ contract Rafflebot {
     error RaffleNotOver();
 
     constructor() {
-        id = 0;
+        id = 1;
         endTime = block.timestamp + 24 hours;
         seed = block.difficulty + block.timestamp;
         
@@ -50,7 +50,7 @@ contract Rafflebot {
     }
 
     function end() public {
-        if (endTime <= block.timestamp) revert RaffleNotOver();
+        if (endTime > block.timestamp) revert RaffleNotOver();
 
         address winner = raffle();
         winners[id] = winner;
