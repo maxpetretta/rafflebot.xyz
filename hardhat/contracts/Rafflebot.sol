@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// import "hardhat/console.sol"; // DEBUG
+import "hardhat/console.sol"; // DEBUG
 
 contract Rafflebot {
     uint256 public id;
@@ -26,8 +26,8 @@ contract Rafflebot {
 
     constructor() {
         id = 1;
-        endTime = block.timestamp + 5 minutes;
-        seed = block.difficulty + block.timestamp;
+        endTime = block.timestamp + 2 minutes;
+        seed = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp)));
 
         emit NewRaffle(id, endTime);
     }
@@ -44,18 +44,20 @@ contract Rafflebot {
     function end() public {
         if (endTime > block.timestamp) revert RaffleNotOver();
 
-        address winner = raffle();
-        winners[id] = winner;
-        reset();
+        if (entrants.length > 0) {
+            address winner = raffle();
+            winners[id] = winner;
+            emit NewWinner(winner, id, block.timestamp);
+        }
 
-        emit NewWinner(winner, id, block.timestamp);
+        reset();
     }
 
     function raffle() private returns (address) {
-        uint256 numberOfEntrants = entrants.length;
-        uint256 randomNumber = (block.difficulty + block.timestamp + seed) %
-            numberOfEntrants;
-        address winner = entrants[randomNumber];
+        uint256 randomNumber = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, seed)));
+        uint256 index = randomNumber % entrants.length;
+        
+        address winner = entrants[index];
         seed = randomNumber;
 
         return winner;
