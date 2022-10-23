@@ -8,7 +8,7 @@ const client = createClient(
   getDefaultClient({
     appName: "rafflebot.xyz",
     infuraId: process.env.INFURA_ID,
-    chains: [chain.goerli]
+    chains: [chain.hardhat]
   })
 )
 
