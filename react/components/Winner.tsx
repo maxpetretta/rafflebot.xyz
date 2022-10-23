@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { useContractRead } from "wagmi"
+import { useContractEvent, useContractRead } from "wagmi"
 import { rafflebotContract } from "../lib/contract"
 
 export default function Winner(props: { raffleID: string }) {
-  const [winner, setWinner] = useState("")
+  const [winner, setWinner] = useState("No entrants :(")
 
   /**
    * Contract hooks
@@ -15,6 +15,16 @@ export default function Winner(props: { raffleID: string }) {
     onSuccess(data) {
       setWinner(String(data))
     },
+  })
+
+  useContractEvent({
+    ...rafflebotContract,
+    eventName: "NewWinner",
+    listener: (event) => {
+      if (event[0]) {
+        setWinner(event[0])
+      }
+    }
   })
 
   return (

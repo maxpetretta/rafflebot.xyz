@@ -59,7 +59,7 @@ const Home: NextPage = () => {
    * On page load, begin a countdown timer for the raffle
    */
   useEffect(() => {
-    if (countdown != 0) {
+    if (countdown > 0) {
       const interval = setInterval(() => {
         setCountdown(countdown - 1000)
       }, 1000)
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
           <div className="h-8" />
           <p>Today&apos;s raffle ends in:</p>
           <h2 className="mt-8 text-center text-5xl font-bold">
-            {countdown != 0 && (
+            {countdown > 0 && (
               <time className="whitespace-pre">
                 {dayjs.duration(countdown).hours() +
                   "h  " +
@@ -102,7 +102,7 @@ const Home: NextPage = () => {
                   "s"}
               </time>
             )}
-            {countdown == 0 && <p>Raffle over!</p>}
+            {countdown <= 0 && <p>Raffle over!</p>}
           </h2>
           <Controls address={address} />
         </div>

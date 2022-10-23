@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { useContractRead } from "wagmi"
+import { useContractEvent, useContractRead } from "wagmi"
 import { rafflebotContract } from "../lib/contract"
 
 export default function EntryList() {
-  const [entrants, setEntrants] = useState<string[]>()
+  const [entrants, setEntrants] = useState<Set<string>>()
 
   /**
    * Contract hooks
@@ -12,14 +12,26 @@ export default function EntryList() {
     ...rafflebotContract,
     functionName: "getEntrants",
     onSuccess(data) {
-      setEntrants(data as string[])
+      setEntrants(new Set(data as string[]))
     },
+  })
+
+  useContractEvent({
+    ...rafflebotContract,
+    eventName: "NewEntry",
+    listener: (event) => {
+      if (event[0]) {
+        let newState = new Set(entrants)
+        newState.add(event[0])
+        setEntrants(newState)
+      }
+    }
   })
 
   return (
     <div className="mt-6 h-44 overflow-y-scroll rounded-lg border-2 border-white/30 bg-white/30">
       {entrants &&
-        entrants.map((entry) => {
+        [...entrants].map((entry) => {
           return (
             <div
               key={entry}
@@ -30,7 +42,7 @@ export default function EntryList() {
           )
         })}
       {!entrants ||
-        (entrants.length == 0 && (
+        (entrants.size == 0 && (
           <div className="border-b border-white p-4">
             <p>No entries yet...</p>
           </div>
