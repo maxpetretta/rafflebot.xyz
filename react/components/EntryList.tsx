@@ -3,7 +3,7 @@ import { useContractRead } from "wagmi"
 import { rafflebotContract } from "../lib/contract"
 
 export default function EntryList() {
-  const [entrants, setEntrants] = useState()
+  const [entrants, setEntrants] = useState<string[]>()
 
   /**
    * Contract hooks
@@ -12,7 +12,7 @@ export default function EntryList() {
     ...rafflebotContract,
     functionName: "getEntrants",
     onSuccess(data) {
-      setEntrants(data)
+      setEntrants(data as string[])
     }
   })
 

@@ -17,8 +17,8 @@ dayjs.extend(relativeTime)
 dayjs.extend(duration)
 
 const Home: NextPage = () => {
-  const [address, setAddress] = useState()
-  const [raffleID, setRaffleID] = useState()
+  const [address, setAddress] = useState("")
+  const [raffleID, setRaffleID] = useState("")
   const [countdown, setCountdown] = useState(0)
 
   /**
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
         setRaffleID(ethers.utils.formatUnits(data[0], 0))
       }
       if (data[1]) {
-        const end = dayjs(data[1] * 1000)
+        const end = dayjs(Number(data[1]) * 1000)
         const countdown = end.diff(dayjs())
         setCountdown(countdown)
       }
@@ -59,10 +59,12 @@ const Home: NextPage = () => {
    * On page load, begin a countdown timer for the raffle
    */
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCountdown(countdown - 1000)
-    }, 1000)
-    return () => clearInterval(interval)
+    if(countdown != 0) {
+      const interval = setInterval(() => {
+        setCountdown(countdown - 1000)
+      }, 1000)
+      return () => clearInterval(interval)
+    }
   }, [countdown])
 
   return (
@@ -82,8 +84,11 @@ const Home: NextPage = () => {
           <div className="h-8" />
           <p>Today's raffle ends in:</p>
           <h2 className="mt-8 text-center text-5xl font-bold">
-            {countdown && 
+            {countdown != 0 && 
               <time className="whitespace-pre">{dayjs.duration(countdown).hours() + "h  " + dayjs.duration(countdown).minutes() + "m  " + dayjs.duration(countdown).seconds() + "s"}</time>
+            }
+            {countdown == 0 &&
+              <p>Raffle over!</p>
             }
           </h2>
           <Controls address={address} />

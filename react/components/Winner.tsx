@@ -3,7 +3,7 @@ import { useContractRead } from "wagmi"
 import { rafflebotContract } from "../lib/contract"
 
 export default function Winner(props: { raffleID: string }) {
-  const [winner, setWinner] = useState()
+  const [winner, setWinner] = useState("")
 
   /**
    * Contract hooks
@@ -13,8 +13,7 @@ export default function Winner(props: { raffleID: string }) {
     functionName: "getWinner",
     args: [Number(props.raffleID) - 1],
     onSuccess(data) {
-      console.log("Winner: ", winner)
-      setWinner(data)
+      setWinner(String(data))
     }
   })
 
