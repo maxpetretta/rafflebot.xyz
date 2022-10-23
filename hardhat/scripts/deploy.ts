@@ -23,14 +23,14 @@ const main = async () => {
 }
 
 /**
-* Sleep the main thread for the specified number of milliseconds
-* @param {number} ms
-*/
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+ * Sleep the main thread for the specified number of milliseconds
+ * @param {number} ms
+ */
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /**
-* Execute the main script
-*/
+ * Execute the main script
+ */
 const runMain = async () => {
   try {
     await main()

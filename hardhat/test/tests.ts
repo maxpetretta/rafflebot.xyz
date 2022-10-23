@@ -1,8 +1,11 @@
 /**
  * Run a series of tests on the smart contract locally
  */
-const { expect } = require("chai");
-const { time, loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
+const { expect } = require("chai")
+const {
+  time,
+  loadFixture,
+} = require("@nomicfoundation/hardhat-network-helpers")
 
 describe("Rafflebot contract", function () {
   async function rafflebotFixture() {
@@ -12,7 +15,7 @@ describe("Rafflebot contract", function () {
 
     const rafflebot = await contract.deploy()
     await rafflebot.deployed()
-    
+
     return { rafflebot, owner, accounts }
   }
 
@@ -23,5 +26,5 @@ describe("Rafflebot contract", function () {
     })
   })
 
-   // TODO: More tests needed before a mainnet deployment, skipping for now
+  // TODO: More tests needed before a mainnet deployment, skipping for now
 })

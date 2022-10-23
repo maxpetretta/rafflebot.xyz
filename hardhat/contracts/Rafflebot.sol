@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "hardhat/console.sol"; // DEBUG
-
+// import "hardhat/console.sol"; // DEBUG
 
 contract Rafflebot {
     uint256 public id;
@@ -12,11 +11,7 @@ contract Rafflebot {
     mapping(address => uint256) public entries;
     mapping(uint256 => address) public winners;
 
-    event NewEntry(
-        address indexed from,
-        uint256 indexed id,
-        uint256 timestamp
-    );
+    event NewEntry(address indexed from, uint256 indexed id, uint256 timestamp);
 
     event NewWinner(
         address indexed winner,
@@ -24,25 +19,22 @@ contract Rafflebot {
         uint256 timestamp
     );
 
-    event NewRaffle(
-        uint256 indexed id,
-        uint256 endTime
-    );
+    event NewRaffle(uint256 indexed id, uint256 endTime);
 
     error AlreadyEntered();
     error RaffleNotOver();
 
     constructor() {
         id = 1;
-        endTime = block.timestamp + 24 hours;
+        endTime = block.timestamp + 5 minutes;
         seed = block.difficulty + block.timestamp;
-        
+
         emit NewRaffle(id, endTime);
     }
 
     function enter() public {
         if (entries[msg.sender] == id) revert AlreadyEntered();
-        
+
         entrants.push(msg.sender);
         entries[msg.sender] = id;
 
@@ -61,16 +53,17 @@ contract Rafflebot {
 
     function raffle() private returns (address) {
         uint256 numberOfEntrants = entrants.length;
-        uint256 randomNumber = (block.difficulty + block.timestamp + seed) % numberOfEntrants;
+        uint256 randomNumber = (block.difficulty + block.timestamp + seed) %
+            numberOfEntrants;
         address winner = entrants[randomNumber];
         seed = randomNumber;
 
         return winner;
     }
-    
+
     function reset() private {
         delete entrants;
-        endTime = block.timestamp + 24 hours;
+        endTime = block.timestamp + 5 minutes;
         id++;
 
         emit NewRaffle(id, endTime);

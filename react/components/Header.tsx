@@ -3,9 +3,9 @@ import Link from "next/link"
 
 export default function Header() {
   return (
-    <header className="flex justify-between p-6 items-center">
+    <header className="flex items-center justify-between p-6">
       <Link href="/">
-        <a className="text-xl text-white font-semibold rounded-lg p-3 bg-white/25 transition-transform hover:scale-110 ease-in-out">
+        <a className="rounded-lg bg-white/25 p-3 text-xl font-semibold text-white transition-transform ease-in-out hover:scale-110">
           🤖 Rafflebot.xyz
         </a>
       </Link>

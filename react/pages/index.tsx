@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import type { NextPage } from 'next'
+import type { NextPage } from "next"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useAccount, useContractReads } from "wagmi"
@@ -25,11 +25,11 @@ const Home: NextPage = () => {
    * Contract hooks
    */
   useAccount({
-    onConnect({address}) {
+    onConnect({ address }) {
       if (address) {
         setAddress(address)
       }
-    }
+    },
   })
 
   useContractReads({
@@ -41,7 +41,7 @@ const Home: NextPage = () => {
       {
         ...rafflebotContract,
         functionName: "getEndTime",
-      }
+      },
     ],
     onSuccess(data) {
       if (data[0]) {
@@ -52,14 +52,14 @@ const Home: NextPage = () => {
         const countdown = end.diff(dayjs())
         setCountdown(countdown)
       }
-    }
+    },
   })
 
   /**
    * On page load, begin a countdown timer for the raffle
    */
   useEffect(() => {
-    if(countdown != 0) {
+    if (countdown != 0) {
       const interval = setInterval(() => {
         setCountdown(countdown - 1000)
       }, 1000)
@@ -68,10 +68,10 @@ const Home: NextPage = () => {
   }, [countdown])
 
   return (
-    <div className="bg-gradient-to-br from-red-500 to-fuchsia-900 min-h-screen flex flex-col justify-between">
+    <div className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-red-500 to-fuchsia-900">
       <Header />
-      <div className="flex m-auto w-3/5 bg-white/25 rounded-xl border-2 border-white/50 p-3">
-        <div className="flex flex-col w-1/2">
+      <div className="m-auto flex w-3/5 rounded-xl border-2 border-white/50 bg-white/25 p-3">
+        <div className="flex w-1/2 flex-col">
           <time className="text-gray-200">
             {new Date().toLocaleDateString("en-US", {
               year: "numeric",
@@ -79,22 +79,35 @@ const Home: NextPage = () => {
               day: "numeric",
             })}
           </time>
-          <h1 className="text-5xl font-semibold mt-2">Raffle #{raffleID}</h1>
-          <p className="mt-4">Welcome to rafflebot, where every day we raffle prizes away to one lucky <em>human</em>.  To enter today's raffle, prove you are human below using your <a className="font-semibold underline" href="https://worldcoin.org">WorldID</a>!</p>
+          <h1 className="mt-2 text-5xl font-semibold">Raffle #{raffleID}</h1>
+          <p className="mt-4">
+            Welcome to rafflebot, where every day we raffle prizes away to one
+            lucky <em>human</em>. To enter today&apos;s raffle, prove you are
+            human below using your{" "}
+            <a className="font-semibold underline" href="https://worldcoin.org">
+              WorldID
+            </a>
+            !
+          </p>
           <div className="h-8" />
-          <p>Today's raffle ends in:</p>
+          <p>Today&apos;s raffle ends in:</p>
           <h2 className="mt-8 text-center text-5xl font-bold">
-            {countdown != 0 && 
-              <time className="whitespace-pre">{dayjs.duration(countdown).hours() + "h  " + dayjs.duration(countdown).minutes() + "m  " + dayjs.duration(countdown).seconds() + "s"}</time>
-            }
-            {countdown == 0 &&
-              <p>Raffle over!</p>
-            }
+            {countdown != 0 && (
+              <time className="whitespace-pre">
+                {dayjs.duration(countdown).hours() +
+                  "h  " +
+                  dayjs.duration(countdown).minutes() +
+                  "m  " +
+                  dayjs.duration(countdown).seconds() +
+                  "s"}
+              </time>
+            )}
+            {countdown == 0 && <p>Raffle over!</p>}
           </h2>
           <Controls address={address} />
         </div>
         <div className="w-1/2">
-          <div className="border-2 border-white/50 rounded-full m-auto flex justify-center w-fit p-4">
+          <div className="m-auto flex w-fit justify-center rounded-full border-2 border-white/50 p-4">
             <Image
               src="/poap.svg"
               alt={"The current prize for raffle #" + raffleID}

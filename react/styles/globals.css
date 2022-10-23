@@ -10,7 +10,7 @@
     font-display: swap;
   }
   html {
-    @apply text-white
+    @apply text-white;
   }
 }
 

@@ -13,25 +13,28 @@ export default function EntryList() {
     functionName: "getEntrants",
     onSuccess(data) {
       setEntrants(data as string[])
-    }
+    },
   })
 
   return (
-    <div className="border-2 border-white/30 h-44 rounded-lg bg-white/30 overflow-y-scroll mt-6">
-      {entrants && 
+    <div className="mt-6 h-44 overflow-y-scroll rounded-lg border-2 border-white/30 bg-white/30">
+      {entrants &&
         entrants.map((entry) => {
           return (
-            <div key={entry} className="border-b border-white p-4 font-medium text-center">
+            <div
+              key={entry}
+              className="border-b border-white p-4 text-center font-medium"
+            >
               {entry}
             </div>
           )
-        })
-      }
-      {!entrants || entrants.length == 0 && 
-        <div className="border-b border-white p-4">
-          <p>No entries yet...</p>
-        </div>
-      }
+        })}
+      {!entrants ||
+        (entrants.length == 0 && (
+          <div className="border-b border-white p-4">
+            <p>No entries yet...</p>
+          </div>
+        ))}
     </div>
   )
 }
