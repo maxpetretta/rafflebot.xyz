@@ -32,7 +32,7 @@ export default function Winner(props: { raffleID: string }) {
       <p className="font-semibold">
         Yesterday&apos;s winner:{" "}
         {winner != "0x0000000000000000000000000000000000000000"
-          ? winner
+          ? <a href={"https://goerli.etherscan.io/address/" + winner}>{winner}</a>
           : "No entrants :("}
       </p>
     </div>

@@ -10,7 +10,7 @@ const WorldIDWidget = dynamic<WidgetProps>(
 )
 
 export default function Controls(props: { address: string }) {
-  const [isHuman, setIsHuman] = useState(true)
+  const [isHuman, setIsHuman] = useState(false)
 
   /**
    * Contract hooks
@@ -43,6 +43,21 @@ export default function Controls(props: { address: string }) {
     },
   })
 
+  /**
+   * Prove that the user is a unique human, using WorldID
+   * 
+   * Note: In a production version of this app, this simple check would not be sufficient.  The preference would be either:
+   *    - Send the WorldID response to a backend service, which would handle the raffle registration itself
+   *    - Pass the WorldID response to the smart contract, which could perform the proof-of-personhood verification on-chain
+   * Since this is an MVP, skipping for now
+   * 
+   * @param response 
+   */
+  const proveHumanity = async (response: any) => {
+    console.debug(response)
+    setIsHuman(true)
+  }
+
   return (
     <div className="flex grow flex-col items-center justify-center">
       <WorldIDWidget
@@ -50,10 +65,7 @@ export default function Controls(props: { address: string }) {
         signal={props.address}
         signalDescription="Enter the current daily raffle for a free NFT!"
         enableTelemetry
-        onSuccess={(verificationResponse) => {
-          console.log(verificationResponse)
-          setIsHuman(true)
-        }}
+        onSuccess={(response) => proveHumanity(response)}
         onError={(error) => console.error(error)}
         debug={true}
       />

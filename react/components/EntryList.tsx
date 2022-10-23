@@ -30,23 +30,22 @@ export default function EntryList() {
 
   return (
     <div className="mt-6 h-44 overflow-y-scroll rounded-lg border-2 border-white/30 bg-white/30">
-      {entrants &&
+      {entrants && entrants.size > 0 &&
         [...entrants].map((entry) => {
           return (
             <div
               key={entry}
               className="border-b border-white p-4 text-center font-medium"
             >
-              {entry}
+              <a href={"https://goerli.etherscan.io/address/" + entry}>{entry}</a>
             </div>
           )
         })}
-      {!entrants ||
-        (entrants.size == 0 && (
-          <div className="border-b border-white p-4">
-            <p>No entries yet...</p>
-          </div>
-        ))}
+      {!entrants || entrants.size == 0 &&
+        <div className="border-b border-white p-4">
+          <p>No entries yet...</p>
+        </div>
+      }
     </div>
   )
 }
