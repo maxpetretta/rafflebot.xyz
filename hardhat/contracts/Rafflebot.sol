@@ -3,6 +3,12 @@ pragma solidity ^0.8.9;
 
 // import "hardhat/console.sol"; // DEBUG
 
+/**
+ * @title Rafflebot
+ * @author Max Petretta (maxpetretta.eth)
+ * @notice A smart contract based daily raffle platform, secured by WorldID
+ * @dev Only in MVP stage!
+ */
 contract Rafflebot {
     uint256 public id;
     uint256 public endTime;
@@ -21,12 +27,15 @@ contract Rafflebot {
 
     event NewRaffle(uint256 indexed id, uint256 endTime);
 
+    /// @notice Thrown when the sender has already entered the raffle
     error AlreadyEntered();
+
+    /// @notice Thrown when the current raffle has not expired yet
     error RaffleNotOver();
 
     constructor() {
         id = 1;
-        endTime = block.timestamp + 2 minutes;
+        endTime = block.timestamp + 15 minutes;
         seed = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp)));
 
         emit NewRaffle(id, endTime);
@@ -65,7 +74,7 @@ contract Rafflebot {
 
     function reset() private {
         delete entrants;
-        endTime = block.timestamp + 5 minutes;
+        endTime = block.timestamp + 24 hours;
         id++;
 
         emit NewRaffle(id, endTime);
