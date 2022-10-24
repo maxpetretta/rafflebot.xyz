@@ -1,5 +1,7 @@
 # rafflebot.xyz
-This repo contains the source code for [rafflebot.xyz](https://rafflebot.xyz), a smart contract based daily raffle platform.  Rafflebot is secured by [WorldID](https://id.worldcoin.org), which ensures that participants can only enter each raffle once.
+This repo contains the source code for [rafflebot.xyz](https://rafflebot.xyz), a smart contract based daily raffle platform.  Rafflebot is secured by [WorldID](https://id.worldcoin.org), which ensures that participants can only enter each raffle once.  Deployed to the [Goerli testnet](https://goerli.etherscan.io/address/0x411A84893aEd4fD5495e210A9f11FA009757fb98).
+
+[![A screenshot of rafflebot.xyz](./site.png)](https://rafflebot.xyz)
 
 ## Tech Stack
 Built with the following technologies:

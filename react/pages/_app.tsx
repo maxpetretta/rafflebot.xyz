@@ -7,8 +7,8 @@ import "../styles/globals.css"
 const client = createClient(
   getDefaultClient({
     appName: "rafflebot.xyz",
-    infuraId: process.env.INFURA_ID,
-    chains: [chain.hardhat, chain.goerli],
+    infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
+    chains: [chain.goerli, chain.hardhat],
   })
 )
 
